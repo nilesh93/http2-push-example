@@ -11,13 +11,14 @@ const PORT = process.env.PORT || 3000
 const PUBLIC_PATH = path.join(__dirname, '../public')
 
 const publicFiles = helper.getFiles(PUBLIC_PATH)
-const server = http2.createSecureServer({
-  cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem')),
-  key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem'))
-}, onRequest)
+const server = http2.createSecureServer({}, onRequest)
 
+// const server = http2.createServercreateSecureServer({
+//   cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem')),
+//   key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem'))
+// }, onRequest)
 // Push file
-function push (stream, path) {
+function push(stream, path) {
   const file = publicFiles.get(path)
 
   if (!file) {
@@ -30,7 +31,7 @@ function push (stream, path) {
 }
 
 // Request handler
-function onRequest (req, res) {
+function onRequest(req, res) {
   const reqPath = req.url === '/' ? '/index.html' : req.url
   const file = publicFiles.get(reqPath)
 
